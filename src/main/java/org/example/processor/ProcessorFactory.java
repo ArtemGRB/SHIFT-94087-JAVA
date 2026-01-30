@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class ProcessorFactory {
 
-        public Map<DataType,DataProcessor> createProcessors(AppConfig appConfig){
+        static public Map<DataType,DataProcessor> createProcessors(AppConfig appConfig){
 
             Map<DataType,DataProcessor> processorMap = new HashMap<>();
 

@@ -10,4 +10,12 @@ public enum DataType {
             case STRING -> "strings.txt";
         };
     }
+
+    public String getTypeName() {
+        return switch (this) {
+            case INTEGER -> "целые числа";
+            case FLOAT -> "вещественные числа";
+            case STRING -> "строки";
+        };
+    }
 }

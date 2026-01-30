@@ -4,5 +4,5 @@ public interface Statistics {
 
     <T> void addValue(T value);
 
-    String getStatistic();
+    void printStatistic();
 }

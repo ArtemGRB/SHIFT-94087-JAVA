@@ -24,7 +24,7 @@ public class FileContentFilter {
         try {
             processInputFiles(appConfig.inputFiles(), processors);
         } finally {
-
+            closeProcessors(processors);
         }
     }
 
@@ -34,6 +34,7 @@ public class FileContentFilter {
                 System.out.println("Обработка файла: " + inputFile);
                 lines.forEach(line -> {
                     DataType type = CheckerTypeData.check(line);
+                    processors.get(type).addValueForStatistic(line);
                     processors.get(type).process(line);
                 });
             } catch (IOException e) {

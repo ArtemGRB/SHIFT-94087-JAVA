@@ -24,7 +24,7 @@ public class FileContentFilter {
         try {
             processInputFiles(appConfig.inputFiles(), processors);
         } finally {
-
+            closeProcessors(processors);
         }
     }
 

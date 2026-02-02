@@ -3,6 +3,10 @@ package org.example.statistic;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+/**
+ * Реализация полной статистики для числовых данных (целые и вещественные числа).
+ * Собирает количество элементов, минимальное/максимальное значение, сумму и среднее.
+ */
 public class FullNumericStatistics implements Statistics{
 
     private final String typeName;
@@ -15,6 +19,12 @@ public class FullNumericStatistics implements Statistics{
         this.typeName = typeName;
     }
 
+    /**
+     * Добавляет числовое значение в статистику.
+     * Обновляет счетчик, минимальное/максимальное значение и сумму.
+     *
+     * @param value строковое представление числа для добавления
+     */
     @Override
     public void addValue(String value) {
         BigDecimal number = new BigDecimal(value);
@@ -29,6 +39,11 @@ public class FullNumericStatistics implements Statistics{
 
     }
 
+    /**
+     * Выводит полную статистику по числовым данным в консоль.
+     * Если нет данных, метод ничего не выводит.
+     * Выводит количество элементов, минимальное/максимальное значение, сумму и среднее.
+     */
     @Override
     public void printStatistic() {
         if(count == 0) {return;}

@@ -15,6 +15,11 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+
+/**
+ * Процессор для обработки данных определенного типа.
+ * Отвечает за запись данных в соответствующий выходной файл и сбор статистики.
+ */
 public class DataProcessor {
 
     private final AppConfig appConfig;
@@ -22,6 +27,12 @@ public class DataProcessor {
     private Statistics statistics;
     private BufferedWriter bufferedWriter;
 
+    /**
+     * Создает новый процессор для указанного типа данных.
+     *
+     * @param appConfig конфигурация приложения
+     * @param dataType  тип данных, который будет обрабатывать этот процессор
+     */
     public DataProcessor(AppConfig appConfig, DataType dataType) {
         this.appConfig = appConfig;
 
@@ -38,9 +49,15 @@ public class DataProcessor {
                 case STRING -> this.statistics = new ShortStatistic("строкам");
             }
         }
-            this.outputFileName = appConfig.filePrefix() + dataType.getFileName();
+        this.outputFileName = appConfig.filePrefix() + dataType.getFileName();
     }
 
+    /**
+     * Обрабатывает одну строку данных - записывает её в соответствующий файл.
+     *
+     * @param line строка данных для обработки
+     * @throws UncheckedIOException если произошла ошибка записи в файл
+     */
     public void process(String line) {
         try {
             initializationBufferedWriter();
@@ -52,6 +69,12 @@ public class DataProcessor {
         }
     }
 
+    /**
+     * Инициализирует BufferedWriter для записи в файл, если он еще не был инициализирован.
+     * Создает необходимые директории, если они отсутствуют.
+     *
+     * @throws IOException если произошла ошибка при создании файла или директорий
+     */
     private void initializationBufferedWriter() throws IOException {
         if (bufferedWriter == null) {
             Path outputPath = appConfig.outputPath().resolve(outputFileName);
@@ -65,20 +88,31 @@ public class DataProcessor {
         }
     }
 
-    public String getOutputFileName() {
-        return outputFileName;
-    }
-
+    /**
+     * Закрывает BufferedWriter, освобождая ресурсы.
+     *
+     * @throws IOException если произошла ошибка при закрытии потока
+     */
     public void close() throws IOException {
         if (bufferedWriter != null) {
             bufferedWriter.close();
         }
     }
 
+    /**
+     * Возвращает объект статистики для этого процессора.
+     *
+     * @return объект статистики
+     */
     public Statistics getStatistics() {
         return statistics;
     }
 
+    /**
+     * Возвращает конфигурацию приложения, связанную с этим процессором.
+     *
+     * @return конфигурация приложения
+     */
     public AppConfig getAppConfig() {
         return appConfig;
     }

@@ -1,8 +1,9 @@
 package org.example.statistic;
 
-import org.example.config.AppConfig;
-import org.example.enums.DataType;
-
+/**
+ * Реализация краткой статистики, которая собирает только количество элементов.
+ * Подходит для всех типов данных.
+ */
 public class ShortStatistic implements Statistics {
 
     private final String typeName;
@@ -12,16 +13,28 @@ public class ShortStatistic implements Statistics {
         this.typeName = typeName;
 
     }
-
+    /**
+     * Добавляет значение в статистику, увеличивая счетчик элементов.
+     *
+     * @param value строковое значение для добавления (не анализируется)
+     */
     @Override
     public void addValue(String value) {
         count++;
     }
 
+    /**
+     * Выводит краткую статистику в консоль.
+     * Если нет данных, метод ничего не выводит.
+     */
     @Override
     public void printStatistic() {
         if(count == 0) {return;}
 
-        System.out.println(String.format("\n*** Краткая статистика по %s ***\nКоличество элементов: %d", typeName, count));
+        System.out.println(String.format("""
+                                          
+                                          *** Краткая статистика по %s ***
+                                          Количество элементов: %d"""
+                , typeName, count));
     }
 }

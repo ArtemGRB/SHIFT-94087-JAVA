@@ -1,5 +1,8 @@
 package org.example.enums;
 
+/**
+ * Перечисление, представляющее типы данных, которые может обрабатывать приложение.
+ */
 public enum DataType {
     INTEGER, FLOAT, STRING;
 

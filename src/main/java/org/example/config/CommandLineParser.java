@@ -8,8 +8,28 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Парсер аргументов командной строки для создания конфигурации приложения.
+ * Обрабатывает опции командной строки и преобразует их в объект {@link AppConfig}.
+ */
 public class CommandLineParser {
 
+    /**
+     * Парсит аргументы командной строки и создает объект конфигурации приложения.
+     * <p>
+     * Поддерживаемые параметры:
+     * <ul>
+     *   <li><code>-o PATH</code> - директория для сохранения результатов</li>
+     *   <li><code>-p PREFIX</code> - префикс имен выходных файлов</li>
+     *   <li><code>-a</code> - режим добавления к существующим файлам</li>
+     *   <li><code>-s</code> - режим краткой статистики</li>
+     *   <li><code>-f</code> - режим полной статистики</li>
+     * </ul>
+     *
+     * @param args массив аргументов командной строки
+     * @return объект конфигурации приложения {@link AppConfig}
+     * @throws ConfigException если аргументы некорректны или отсутствуют обязательные параметры
+     */
     public AppConfig parse(String[] args) {
         List<Path> inputFiles = new ArrayList<>();
         Path outputPath = Paths.get("");

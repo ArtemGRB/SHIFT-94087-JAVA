@@ -2,6 +2,11 @@ package org.example.processor;
 
 import org.example.config.AppConfig;
 import org.example.enums.DataType;
+import org.example.enums.StatisticsMode;
+import org.example.statistic.FullNumericStatistics;
+import org.example.statistic.FullStringStatistics;
+import org.example.statistic.ShortStatistic;
+import org.example.statistic.Statistics;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -14,20 +19,33 @@ public class DataProcessor {
 
     private final AppConfig appConfig;
     private final String outputFileName;
+    private Statistics statistics;
     private BufferedWriter bufferedWriter;
 
     public DataProcessor(AppConfig appConfig, DataType dataType) {
         this.appConfig = appConfig;
-        this.outputFileName = appConfig.filePrefix() + dataType.getFileName();
+
+        if (appConfig.statisticsMode() == StatisticsMode.FULL) {
+            switch (dataType) {
+                case FLOAT -> this.statistics = new FullNumericStatistics("вещественным числам");
+                case INTEGER -> this.statistics = new FullNumericStatistics("целым числам");
+                case STRING -> this.statistics = new FullStringStatistics();
+            }
+        } else {
+            switch (dataType) {
+                case FLOAT -> this.statistics = new ShortStatistic("вещественным числам");
+                case INTEGER -> this.statistics = new ShortStatistic("целым числам");
+                case STRING -> this.statistics = new ShortStatistic("строкам");
+            }
+        }
+            this.outputFileName = appConfig.filePrefix() + dataType.getFileName();
     }
 
     public void process(String line) {
         try {
-            // Lazy инициализация writer
             initializationBufferedWriter();
             bufferedWriter.write(line);
             bufferedWriter.newLine();
-            bufferedWriter.flush();
         } catch (IOException e) {
             // Превращаем проверяемое исключение в непроверяемое, чтобы прервать stream
             throw new UncheckedIOException("Ошибка записи в файл '" + outputFileName + "'", e);
@@ -39,7 +57,6 @@ public class DataProcessor {
             Path outputPath = appConfig.outputPath().resolve(outputFileName);
             Path parentDir = outputPath.getParent();
 
-            // Создаем директории, только если они указаны в пути и существуют
             if (parentDir != null) {
                 Files.createDirectories(parentDir);
             }
@@ -56,6 +73,14 @@ public class DataProcessor {
         if (bufferedWriter != null) {
             bufferedWriter.close();
         }
+    }
+
+    public Statistics getStatistics() {
+        return statistics;
+    }
+
+    public AppConfig getAppConfig() {
+        return appConfig;
     }
 }
 

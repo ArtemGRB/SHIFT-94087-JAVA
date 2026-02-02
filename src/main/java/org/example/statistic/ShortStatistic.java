@@ -31,10 +31,9 @@ public class ShortStatistic implements Statistics {
     public void printStatistic() {
         if(count == 0) {return;}
 
-        System.out.println(String.format("""
-                                          
-                                          *** Краткая статистика по %s ***
-                                          Количество элементов: %d"""
-                , typeName, count));
+        System.out.println("""
+                          
+                          *** Краткая статистика по %s ***
+                          Количество элементов: %d""".formatted(typeName, count));
     }
 }

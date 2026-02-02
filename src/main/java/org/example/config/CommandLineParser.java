@@ -39,9 +39,10 @@ public class CommandLineParser {
 
         if (args.length == 0) {
             throw new ConfigException(
-                    "Не указаны аргументы командной строки.\n" +
-                            "Формат использования: java -jar util.jar [опции] входные_файлы...\n" +
-                            "Пример: java -jar util.jar -o ./output -p result_ file1.txt file2.txt"
+                    """
+                            Не указаны аргументы командной строки." +
+                            "Формат использования: java -jar util.jar [опции] входные_файлы..." +
+                            "Пример: java -jar util.jar -o ./output -p result_ file1.txt file2.txt"""
             );
         }
 
@@ -101,9 +102,10 @@ public class CommandLineParser {
 
         if (inputFiles.isEmpty()) {
             throw new ConfigException(
-                    "Не указаны входные файлы для обработки.\n" +
-                            "Укажите хотя бы один файл после опций (например: file1.txt file2.txt).\n" +
-                            "Проверьте, что имена файлов указаны корректно.");
+                    """
+                            Не указаны входные файлы для обработки." +
+                            "Укажите хотя бы один файл после опций (например: file1.txt file2.txt)." +
+                            "Проверьте, что имена файлов указаны корректно.""");
         }
 
         return new AppConfig(inputFiles, outputPath, filePrefix, appendMode, statisticsMode);

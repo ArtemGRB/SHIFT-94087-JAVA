@@ -36,14 +36,11 @@ public class FullStringStatistics implements Statistics {
     public void printStatistic() {
         if(count == 0) {return;}
 
-        System.out.println(String.format(
-                """
+        System.out.println("""
                         *** Полная статистика по строкам ***
                         Количество элементов: %d
                         Самая короткая строка (длина): %d
                         Самая длинная строка (длина): %d
-                        """,
-                count, minLength, maxLength
-        ));
+                        """.formatted(count, minLength, maxLength));
     }
 }

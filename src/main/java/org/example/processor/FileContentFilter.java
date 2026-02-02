@@ -3,6 +3,7 @@ package org.example.processor;
 import org.example.config.AppConfig;
 import org.example.config.CommandLineParser;
 import org.example.enums.DataType;
+import org.example.enums.StatisticsMode;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -23,8 +24,12 @@ public class FileContentFilter {
         Map<DataType, DataProcessor> processors = ProcessorFactory.createProcessors(appConfig);
         try {
             processInputFiles(appConfig.inputFiles(), processors);
-        } finally {
 
+            if(appConfig.statisticsMode() != StatisticsMode.NONE){
+                printStatistic(processors);
+            }
+        } finally {
+            closeProcessors(processors);
         }
     }
 
@@ -34,7 +39,12 @@ public class FileContentFilter {
                 System.out.println("Обработка файла: " + inputFile);
                 lines.forEach(line -> {
                     DataType type = CheckerTypeData.check(line);
-                    processors.get(type).process(line);
+
+                    DataProcessor processor = processors.get(type);
+                    processor.process(line);
+                    if(processor.getAppConfig().statisticsMode() != StatisticsMode.NONE){
+                        processor.getStatistics().addValue(line);
+                    }
                 });
             } catch (IOException e) {
                 System.err.println("Ошибка чтения файла '" + inputFile + "': " + e.getMessage() + ". Файл будет пропущен.");
@@ -54,4 +64,9 @@ public class FileContentFilter {
             }
         });
     }
+
+    private void printStatistic(Map<DataType, DataProcessor> processors){
+        processors.forEach((key, value) -> value.getStatistics().printStatistic());
+    }
+
 }
